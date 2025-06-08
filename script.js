@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     storedTasks.forEach((taskText) => addTask(taskText, false));
   }
 
-  function addTask(taskText, save = true) {
-    taskText = taskText.trim();
+  function addTask() {
+    const taskText = taskInput.value.trim();
 
     if (taskText === "") {
       alert("Please enter a task.");
@@ -27,20 +27,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     removeBtn.onclick = () => {
       taskList.removeChild(li);
-      if (save) {
-        removeTaskFromStorage(taskText);
-      }
     };
 
     li.appendChild(removeBtn);
     taskList.appendChild(li);
 
     taskInput.value = "";
-
-    if (save) {
-      saveTaskToStorage(taskText);
-    }
   }
+
+  addButton.addEventListener("click", addTask);
+
+  taskInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      addTask();
+    }
+  });
 
   function saveTaskToStorage(taskText) {
     const storedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
